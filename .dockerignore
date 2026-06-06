@@ -1,0 +1,35 @@
+# VCS and local environments
+.git/
+.venv/
+venv/
+env/
+ENV/
+
+# Local secrets/config
+.env
+.env.*
+!.env.example
+
+# Python/cache/test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.cache
+.cache/
+
+# Local-only data and generated outputs
+data/IKEA_product_catalog.csv
+notebooks/outputs/
+logs/
+*.log
+
+# IDE/OS noise
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-06-04T19:08:09.832639+00:00",
+  "feature_columns": [
+    "price_index",
+    "affordability_index",
+    "online_availability_pct",
+    "assortment_breadth"
+  ],
+  "cluster_count": 4,
+  "random_seed": 42,
+  "row_count": 41,
+  "artifact_file": "data/clustering_artifact.joblib",
+  "metadata_file": "data/clustering_metadata.json",
+  "input_csv": "data/country_metrics.csv",
+  "output_csv": "data/clustering_results.csv",
+  "model_type": "KMeans",
+  "scaler_type": "StandardScaler",
+  "silhouette_score": 0.4745439704055752
+}

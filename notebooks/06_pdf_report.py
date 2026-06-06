@@ -116,7 +116,7 @@ def create_executive_report() -> None:
     
     # Build PDF
     doc.build(story)
-    print(f"✓ Executive report saved to: {PDF_OUTPUT}")
+    print(f"Executive report saved to: {PDF_OUTPUT}")
 
 
 if __name__ == "__main__":

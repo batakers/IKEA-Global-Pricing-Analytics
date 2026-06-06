@@ -1,34 +1,21 @@
 from __future__ import annotations
 
 from pathlib import Path
-import re
+import sys
 
-import numpy as np
 import pandas as pd
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.data_prep import normalize_bool, parse_numeric, standardize_country
+
 DATA_DIR = PROJECT_ROOT / "data"
 CATALOG_FILE = DATA_DIR / "IKEA_product_catalog.csv"
 EXCHANGE_FILE = DATA_DIR / "exchange_rate.csv"
 GDP_FILE = DATA_DIR / "gdp_per_capita.csv"
 OUTPUT_FILE = DATA_DIR / "processed_catalog.csv"
-
-
-COUNTRY_NORMALIZATION = {
-    "usa": "United States",
-    "u.s.a": "United States",
-    "united states of america": "United States",
-    "uk": "United Kingdom",
-    "u.k.": "United Kingdom",
-    "uae": "United Arab Emirates",
-    "u.a.e": "United Arab Emirates",
-    "south korea": "Korea, Republic Of",
-    "korea": "Korea, Republic Of",
-    "russia": "Russian Federation",
-    "czech republic": "Czechia",
-    "viet nam": "Vietnam",
-}
 
 
 REQUIRED_CATALOG_COLUMNS = {
@@ -41,56 +28,6 @@ REQUIRED_CATALOG_COLUMNS = {
     "currency",
     "country",
 }
-
-
-
-def standardize_country(country_name: str) -> str:
-    if pd.isna(country_name):
-        return np.nan
-
-    normalized = str(country_name).strip()
-    if not normalized:
-        return np.nan
-
-    key = normalized.lower()
-    if key in COUNTRY_NORMALIZATION:
-        return COUNTRY_NORMALIZATION[key]
-
-    return normalized.title()
-
-
-
-def parse_numeric(value: object) -> float:
-    if pd.isna(value):
-        return np.nan
-
-    text = str(value)
-    text = text.replace(",", "")
-    text = re.sub(r"[^0-9.\-]", "", text)
-
-    if not text:
-        return np.nan
-
-    try:
-        return float(text)
-    except ValueError:
-        return np.nan
-
-
-
-def normalize_bool(value: object) -> bool | np.nan:
-    if pd.isna(value):
-        return np.nan
-
-    text = str(value).strip().lower()
-    if text in {"1", "true", "t", "yes", "y"}:
-        return True
-    if text in {"0", "false", "f", "no", "n"}:
-        return False
-    return np.nan
-
-
-
 def _find_exchange_rate_column(exchange_df: pd.DataFrame) -> str:
     candidate_columns = ["usd_rate", "exchange_rate", "rate_to_usd", "usd_conversion_rate"]
     lowered = {col.lower(): col for col in exchange_df.columns}

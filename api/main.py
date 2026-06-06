@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import List
 import sys
@@ -15,10 +16,58 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.schemas import CountryMetricsSchema, ProductBenchmarkSchema, ClusteringResultSchema
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = PROJECT_ROOT / "data"
+
+country_metrics_df = pd.DataFrame()
+product_benchmark_df = pd.DataFrame()
+clustering_df = pd.DataFrame()
+
+
+# ============================================================================
+# SHARED UTILITIES
+# ============================================================================
+
+
+def load_data_from_directory(data_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    missing_files = [
+        filename
+        for filename in ("country_metrics.csv", "product_benchmark.csv", "clustering_results.csv")
+        if not (data_dir / filename).exists()
+    ]
+    if missing_files:
+        raise FileNotFoundError(
+            "Required data outputs missing: " + ", ".join(missing_files)
+        )
+
+    return (
+        pd.read_csv(data_dir / "country_metrics.csv"),
+        pd.read_csv(data_dir / "product_benchmark.csv"),
+        pd.read_csv(data_dir / "clustering_results.csv"),
+    )
+
+
+def load_data() -> None:
+    """Load datasets into memory at startup."""
+    global country_metrics_df, product_benchmark_df, clustering_df
+
+    country_metrics, product_benchmark, clustering = load_data_from_directory(DATA_DIR)
+    country_metrics_df = country_metrics
+    product_benchmark_df = product_benchmark
+    clustering_df = clustering
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    load_data()
+    yield
+
+
 app = FastAPI(
     title="IKEA Global Pricing API",
     description="Professional REST API for IKEA global pricing analytics",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Enable CORS for dashboard integration
@@ -29,26 +78,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = PROJECT_ROOT / "data"
-
-
-# ============================================================================
-# SHARED UTILITIES
-# ============================================================================
-
-@app.on_event("startup")
-async def load_data():
-    """Load datasets into memory at startup."""
-    global country_metrics_df, product_benchmark_df, clustering_df
-    
-    try:
-        country_metrics_df = pd.read_csv(DATA_DIR / "country_metrics.csv")
-        product_benchmark_df = pd.read_csv(DATA_DIR / "product_benchmark.csv")
-        clustering_df = pd.read_csv(DATA_DIR / "clustering_results.csv")
-    except FileNotFoundError as e:
-        print(f"Warning: Missing data file. {e}")
 
 
 # ============================================================================

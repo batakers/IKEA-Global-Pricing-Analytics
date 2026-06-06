@@ -26,6 +26,8 @@ wheels/
 # Virtual environments
 .venv
 .env
+.env.*
+!.env.example
 .env.local
 
 # IDE
@@ -37,14 +39,20 @@ wheels/
 .DS_Store
 
 # Project specific
-# Note: For portfolio/demo, we commit processed data files
-# so dashboard works immediately on deployment
+# Keep small reference inputs and generated demo/runtime artifacts in data/
+# visible so the dashboard and API can work from committed outputs.
+# The large raw IKEA catalog is a local input used to rerun the pipeline.
+data/IKEA_product_catalog.csv
+
+# Optional analysis/report outputs are regenerated locally.
 notebooks/outputs/
 logs/
 *.log
 
 # Pytest
 .pytest_cache/
+.pytest-tmp/
+pytest-tmp/
 .coverage
 htmlcov/
 

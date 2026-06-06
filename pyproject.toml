@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ikea-global-pricing-analytics"
+version = "0.1.0"
+description = "IKEA global pricing analytics pipeline, API, and dashboard"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "pandas==2.3.3",
+    "numpy==2.4.2",
+    "plotly==6.5.2",
+    "seaborn==0.13.2",
+    "matplotlib==3.10.8",
+    "streamlit==1.54.0",
+    "fastapi==0.134.0",
+    "uvicorn==0.41.0",
+    "pydantic==2.12.5",
+    "scikit-learn==1.8.0",
+    "reportlab==4.4.10",
+    "httpx2==2.2.0",
+    "pytest==9.0.2",
+    "pytest-cov==7.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

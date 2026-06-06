@@ -4,52 +4,12 @@ from pathlib import Path
 import sys
 import pytest
 import pandas as pd
-import numpy as np
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from src.data_prep import normalize_bool, parse_numeric, standardize_country
 from src.schemas import CountryMetricsSchema, ProductBenchmarkSchema
-
-# Import functions from notebooks
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT / "notebooks"))
-
-# Create mock parse_numeric, normalize_bool, standardize_country for testing
-def parse_numeric(value):
-    if pd.isna(value):
-        return np.nan
-    text = str(value).replace(",", "")
-    import re
-    text = re.sub(r"[^0-9.\-]", "", text)
-    if not text:
-        return np.nan
-    try:
-        return float(text)
-    except ValueError:
-        return np.nan
-
-def normalize_bool(value):
-    if pd.isna(value):
-        return np.nan
-    text = str(value).strip().lower()
-    if text in {"1", "true", "t", "yes", "y"}:
-        return True
-    if text in {"0", "false", "f", "no", "n"}:
-        return False
-    return np.nan
-
-def standardize_country(country_name):
-    if pd.isna(country_name):
-        return np.nan
-    normalized = str(country_name).strip()
-    if not normalized:
-        return np.nan
-    COUNTRY_MAP = {"usa": "United States", "uk": "United Kingdom"}
-    key = normalized.lower()
-    if key in COUNTRY_MAP:
-        return COUNTRY_MAP[key]
-    return normalized.title()
 
 
 # ============================================================================

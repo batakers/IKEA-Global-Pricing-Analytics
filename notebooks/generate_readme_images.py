@@ -1,5 +1,5 @@
 """
-Generate preview images for README documentation.
+Generate preview images for README.
 Creates visual snapshots of the dashboard without needing live Streamlit.
 """
 import pandas as pd
@@ -9,8 +9,8 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
-DOCS_DIR = PROJECT_ROOT / "docs"
-DOCS_DIR.mkdir(exist_ok=True)
+ASSET_DIR = PROJECT_ROOT / "assets" / "dashboard"
+ASSET_DIR.mkdir(parents=True, exist_ok=True)
 
 # Set style
 sns.set_style("darkgrid")
@@ -39,7 +39,7 @@ ax2.set_title('🟢 Top 10 Cheapest Markets', fontsize=12, fontweight='bold')
 ax2.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
-plt.savefig(DOCS_DIR / "dashboard_pricing_comparison.png", dpi=100, bbox_inches='tight', facecolor='white')
+plt.savefig(ASSET_DIR / "dashboard_pricing_comparison.png", dpi=100, bbox_inches='tight', facecolor='white')
 print(f"✓ Saved: dashboard_pricing_comparison.png")
 plt.close()
 
@@ -70,7 +70,7 @@ cbar = plt.colorbar(scatter, ax=ax)
 cbar.set_label('Price Index', fontweight='bold')
 
 plt.tight_layout()
-plt.savefig(DOCS_DIR / "dashboard_market_positioning.png", dpi=100, bbox_inches='tight', facecolor='white')
+plt.savefig(ASSET_DIR / "dashboard_market_positioning.png", dpi=100, bbox_inches='tight', facecolor='white')
 print(f"✓ Saved: dashboard_market_positioning.png")
 plt.close()
 
@@ -87,7 +87,7 @@ ax.set_title('⚠️ Markets with Highest Affordability Pressure\n(Higher = More
 ax.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
-plt.savefig(DOCS_DIR / "dashboard_affordability_pressure.png", dpi=100, bbox_inches='tight', facecolor='white')
+plt.savefig(ASSET_DIR / "dashboard_affordability_pressure.png", dpi=100, bbox_inches='tight', facecolor='white')
 print(f"✓ Saved: dashboard_affordability_pressure.png")
 plt.close()
 
@@ -108,7 +108,7 @@ for i, (idx, val) in enumerate(region_online.items()):
     ax.text(val + 2, i, f'{val:.1f}%', va='center', fontweight='bold')
 
 plt.tight_layout()
-plt.savefig(DOCS_DIR / "dashboard_online_availability.png", dpi=100, bbox_inches='tight', facecolor='white')
+plt.savefig(ASSET_DIR / "dashboard_online_availability.png", dpi=100, bbox_inches='tight', facecolor='white')
 print(f"✓ Saved: dashboard_online_availability.png")
 plt.close()
 
@@ -124,7 +124,7 @@ ax.set_title('🏪 Markets with Widest Product Assortment', fontsize=12, fontwei
 ax.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
-plt.savefig(DOCS_DIR / "dashboard_assortment_breadth.png", dpi=100, bbox_inches='tight', facecolor='white')
+plt.savefig(ASSET_DIR / "dashboard_assortment_breadth.png", dpi=100, bbox_inches='tight', facecolor='white')
 print(f"✓ Saved: dashboard_assortment_breadth.png")
 plt.close()
 
@@ -180,7 +180,7 @@ for i in range(1, len(summary_df) + 1):
             table[(i, j)].set_facecolor('#ffffff')
 
 plt.title('📊 Dashboard Key Metrics', fontsize=14, fontweight='bold', pad=20)
-plt.savefig(DOCS_DIR / "dashboard_key_metrics.png", dpi=100, bbox_inches='tight', facecolor='white')
+plt.savefig(ASSET_DIR / "dashboard_key_metrics.png", dpi=100, bbox_inches='tight', facecolor='white')
 print(f"✓ Saved: dashboard_key_metrics.png")
 plt.close()
 
