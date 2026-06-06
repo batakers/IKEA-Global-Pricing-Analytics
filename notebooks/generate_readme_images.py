@@ -21,7 +21,7 @@ print("Generating README preview images...")
 
 # Load data
 country_df = pd.read_csv(DATA_DIR / "country_metrics.csv")
-print(f"✓ Loaded country metrics: {len(country_df)} countries")
+print(f"Loaded country metrics: {len(country_df)} countries")
 
 # --- 1. WORLD MAP PREVIEW: Top 10 Most & Least Expensive ---
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
@@ -29,18 +29,18 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 top_expensive = country_df.nlargest(10, 'avg_price_usd')[['country', 'avg_price_usd']].sort_values('avg_price_usd')
 ax1.barh(top_expensive['country'], top_expensive['avg_price_usd'], color='#d62728')
 ax1.set_xlabel('Average Price (USD)', fontsize=11, fontweight='bold')
-ax1.set_title('🔴 Top 10 Most Expensive Markets', fontsize=12, fontweight='bold')
+ax1.set_title('Top 10 Most Expensive Markets', fontsize=12, fontweight='bold')
 ax1.grid(axis='x', alpha=0.3)
 
 top_cheap = country_df.nsmallest(10, 'avg_price_usd')[['country', 'avg_price_usd']].sort_values('avg_price_usd', ascending=False)
 ax2.barh(top_cheap['country'], top_cheap['avg_price_usd'], color='#2ca02c')
 ax2.set_xlabel('Average Price (USD)', fontsize=11, fontweight='bold')
-ax2.set_title('🟢 Top 10 Cheapest Markets', fontsize=12, fontweight='bold')
+ax2.set_title('Top 10 Cheapest Markets', fontsize=12, fontweight='bold')
 ax2.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
 plt.savefig(ASSET_DIR / "dashboard_pricing_comparison.png", dpi=100, bbox_inches='tight', facecolor='white')
-print(f"✓ Saved: dashboard_pricing_comparison.png")
+print("Saved: dashboard_pricing_comparison.png")
 plt.close()
 
 # --- 2. PRICE INDEX vs AFFORDABILITY ---
@@ -63,7 +63,7 @@ for idx, row in country_df.nlargest(5, 'price_index').iterrows():
                 fontsize=8, xytext=(5, 5), textcoords='offset points')
 
 ax.set_xlabel('Price Index (vs Global Average)', fontsize=11, fontweight='bold')
-ax.set_ylabel('Affordability Index (Price ÷ GDP per Capita)', fontsize=11, fontweight='bold')
+ax.set_ylabel('Affordability Index (Price / GDP per Capita)', fontsize=11, fontweight='bold')
 ax.set_title('Market Positioning: Premium vs Value-Oriented', fontsize=12, fontweight='bold')
 ax.grid(True, alpha=0.3)
 cbar = plt.colorbar(scatter, ax=ax)
@@ -71,7 +71,7 @@ cbar.set_label('Price Index', fontweight='bold')
 
 plt.tight_layout()
 plt.savefig(ASSET_DIR / "dashboard_market_positioning.png", dpi=100, bbox_inches='tight', facecolor='white')
-print(f"✓ Saved: dashboard_market_positioning.png")
+print("Saved: dashboard_market_positioning.png")
 plt.close()
 
 # --- 3. AFFORDABILITY PRESSURE ---
@@ -82,13 +82,13 @@ colors = plt.cm.RdYlGn_r(affordability_rank['affordability_index'] / affordabili
 
 bars = ax.barh(affordability_rank['country'], affordability_rank['affordability_index'], color=colors)
 ax.set_xlabel('Affordability Pressure Index', fontsize=11, fontweight='bold')
-ax.set_title('⚠️ Markets with Highest Affordability Pressure\n(Higher = More Expensive Relative to Income)', 
+ax.set_title('Markets with Highest Affordability Pressure\n(Higher = More Expensive Relative to Income)',
              fontsize=12, fontweight='bold')
 ax.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
 plt.savefig(ASSET_DIR / "dashboard_affordability_pressure.png", dpi=100, bbox_inches='tight', facecolor='white')
-print(f"✓ Saved: dashboard_affordability_pressure.png")
+print("Saved: dashboard_affordability_pressure.png")
 plt.close()
 
 # --- 4. ONLINE AVAILABILITY by Region ---
@@ -109,7 +109,7 @@ for i, (idx, val) in enumerate(region_online.items()):
 
 plt.tight_layout()
 plt.savefig(ASSET_DIR / "dashboard_online_availability.png", dpi=100, bbox_inches='tight', facecolor='white')
-print(f"✓ Saved: dashboard_online_availability.png")
+print("Saved: dashboard_online_availability.png")
 plt.close()
 
 # --- 5. ASSORTMENT BREADTH ---
@@ -120,12 +120,12 @@ colors_assort = plt.cm.Spectral(assortment_rank['assortment_breadth'] / assortme
 
 bars = ax.barh(assortment_rank['country'], assortment_rank['assortment_breadth'], color=colors_assort)
 ax.set_xlabel('Number of Sub-Categories', fontsize=11, fontweight='bold')
-ax.set_title('🏪 Markets with Widest Product Assortment', fontsize=12, fontweight='bold')
+ax.set_title('Markets with Widest Product Assortment', fontsize=12, fontweight='bold')
 ax.grid(axis='x', alpha=0.3)
 
 plt.tight_layout()
 plt.savefig(ASSET_DIR / "dashboard_assortment_breadth.png", dpi=100, bbox_inches='tight', facecolor='white')
-print(f"✓ Saved: dashboard_assortment_breadth.png")
+print("Saved: dashboard_assortment_breadth.png")
 plt.close()
 
 # --- 6. KEY METRICS TABLE ---
@@ -179,13 +179,13 @@ for i in range(1, len(summary_df) + 1):
         else:
             table[(i, j)].set_facecolor('#ffffff')
 
-plt.title('📊 Dashboard Key Metrics', fontsize=14, fontweight='bold', pad=20)
+plt.title('Dashboard Key Metrics', fontsize=14, fontweight='bold', pad=20)
 plt.savefig(ASSET_DIR / "dashboard_key_metrics.png", dpi=100, bbox_inches='tight', facecolor='white')
-print(f"✓ Saved: dashboard_key_metrics.png")
+print("Saved: dashboard_key_metrics.png")
 plt.close()
 
-print("\n✅ All preview images generated successfully!")
-print(f"📁 Location: {DOCS_DIR}/")
+print("\nAll preview images generated successfully.")
+print(f"Location: {ASSET_DIR}/")
 print("\nGenerated files:")
 print("  1. dashboard_pricing_comparison.png - Expensive vs Cheap Markets")
 print("  2. dashboard_market_positioning.png - Price Index vs Affordability")
