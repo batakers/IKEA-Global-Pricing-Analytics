@@ -1,54 +1,65 @@
 # IKEA Global Pricing Strategy & Market Adaptation Analysis
 
-A production-style Business Intelligence project that analyzes IKEA product pricing from a raw catalog covering 46 countries, with the current processed analysis set covering 41 countries after exchange-rate and GDP reference-data joins.
+A production-style Business Intelligence case study that turns IKEA product pricing data into market strategy signals across 41 countries.
 
-**Key Features:**
-- ✅ End-to-end data pipeline (cleaning → aggregation → insights)
-- ✅ REST API with FastAPI & automatic Swagger docs
-- ✅ Interactive Streamlit dashboard (3 pages)
-- ✅ Professional PDF report generation
-- ✅ Market clustering (K-means segmentation)
-- ✅ Pytest validation suite (26 tests passing)
-- ✅ Docker containerization
-- ✅ Pydantic data validation
-- ✅ Structured logging
+## Executive Story
 
-## � For Recruiters - Key Achievement
+**The question:** How should a global retailer compare prices across countries when currency, income levels, e-commerce readiness, and assortment depth all change the meaning of "expensive"?
 
-**Engineered scalable data platform analyzing IKEA pricing across 41 countries:**
-- Built end-to-end ETL pipeline for 366K+ raw product records, with a committed 300,000-row cleaned demo sample for GitHub/portfolio use
-- Developed REST API with FastAPI (15+ endpoints) achieving <100ms response times
-- Implemented K-Means market segmentation with 4 cluster IDs and current market labels across Premium, Emerging, and Niche groups
-- Deployed interactive Streamlit dashboard with live cloud access and professional PDF reporting
-- Established 26 passing pytest tests covering validation, API smoke paths, pipeline outputs, and clustering artifact reload behavior
-- Containerized with Docker for production reproducibility
+**The finding:** In the current analysis set, average market prices range from **$113.86 in Malaysia** to **$255.15 in Egypt** after USD normalization. Egypt and Morocco are not only the highest-price markets; they also show the highest affordability pressure when price is viewed against GDP per capita.
 
-**Tech Stack:** Python • FastAPI • Streamlit • Pandas/NumPy • scikit-learn • Pydantic • Docker • Plotly
+**The resolution:** This project builds a reproducible analytics system that normalizes prices, joins reference data, creates country/product benchmarks, clusters markets, and presents the results through a FastAPI service and Streamlit dashboard.
+
+## What The Data Reveals
+
+- **Price positioning is not the same as affordability.** Egypt and Morocco rank highest on average price and affordability pressure, while India has a below-average price index but still ranks high on affordability pressure.
+- **Market maturity shows up in digital readiness.** Average online availability is **92.9%**, but Egypt, Morocco, Jordan, the Philippines, and Qatar sit at the low end of the distribution.
+- **Assortment breadth separates mature markets.** The United States, Sweden, Norway, the Netherlands, and Denmark lead with the broadest sub-category coverage; the observed range is **137-177 sub-categories**.
+- **Clustering turns metrics into strategy groups.** The latest run labels **27 Premium Markets**, **8 Emerging Markets**, and **6 Niche Markets** from price, affordability, online availability, and assortment features.
+
+## Strategic Recommendations
+
+- Use high-price, high-affordability-pressure markets as candidates for localized pricing, entry-level bundles, or more aggressive promotion strategy.
+- Treat Premium Markets as margin and assortment optimization opportunities rather than simple price-reduction targets.
+- Prioritize online availability improvements in markets where digital readiness trails the global portfolio.
+- Use country/product benchmarks to separate true market pricing differences from assortment mix effects.
+
+## Platform Capabilities
+
+- End-to-end ETL pipeline for 366K+ raw product records, with a committed 300,000-row cleaned demo sample for GitHub and portfolio use.
+- FastAPI service with startup data checks, Pydantic validation, and documented API routes.
+- Streamlit dashboard with pricing, affordability, online availability, and market adaptation views.
+- K-Means clustering artifacts that can be persisted, reloaded, and tested.
+- Dockerized runtime and 26 passing pytest tests covering validation, API smoke paths, pipeline outputs, and clustering artifact reload behavior.
+
+**Tech Stack:** Python, FastAPI, Streamlit, pandas, NumPy, scikit-learn, Pydantic, Docker, Plotly
 
 ---
 
 **Try it live (no installation needed):**
 
-→ **[Open Interactive Dashboard](https://share.streamlit.io/batakers/IKEA-Global-Pricing-/main/dashboard/app.py)** ←
+**[Open Interactive Dashboard](https://share.streamlit.io/batakers/IKEA-Global-Pricing-/main/dashboard/app.py)**
 
-Explore pricing across 41 countries, view affordability metrics, and analyze market segments in real-time.
+Explore pricing across 41 countries, view affordability metrics, and analyze market segments in real time.
 
 ### Dashboard Preview
 
 #### Page 1: Executive Overview
-View key performance indicators, global pricing map, and market rankings at a glance.
+Start with the business baseline: global KPIs, pricing spread, and country rankings that show where prices diverge most.
 
 ![Dashboard Key Metrics](assets/dashboard/dashboard_key_metrics.png)
 
-#### Page 2: Pricing Strategy  
-Analyze market positioning and identify premium vs value-oriented segments.
+#### Page 2: Pricing Strategy
+Compare price index and affordability pressure to separate premium positioning from income-adjusted strain.
 
 ![Market Positioning](assets/dashboard/dashboard_market_positioning.png)
+
+The most and least expensive market rankings give a quick view of where pricing strategy differs most after USD conversion.
 
 ![Pricing Comparison](assets/dashboard/dashboard_pricing_comparison.png)
 
 #### Page 3: Market Adaptation
-Evaluate affordability pressure, e-commerce maturity, and product assortment breadth.
+Use affordability, online availability, and assortment breadth to identify where pricing, e-commerce, or localization strategy needs attention.
 
 ![Affordability Pressure](assets/dashboard/dashboard_affordability_pressure.png)
 
@@ -456,9 +467,11 @@ Generated demo/runtime outputs:
 ## Key Metrics
 
 - **Data Coverage**: 300,000 sampled product records across 41 countries
-- **Global Avg Price**: ~$173 USD
-- **Price Range**: $118-$265 USD (Malaysia to Egypt)
-- **Market Segments**: 4 cluster IDs with current labels across Premium, Emerging, and Niche groups
+- **Global Avg Product Price**: ~$166 USD
+- **Market Avg Price Range**: $113.86-$255.15 USD (Malaysia to Egypt)
+- **Price Index Range**: 0.69x-1.54x vs global average
+- **Online Availability Avg**: 92.9%
+- **Market Segments**: 27 Premium, 8 Emerging, and 6 Niche markets in the latest clustering run
 - **Pipeline Time**: ~20 seconds (end-to-end)
 - **Test Coverage**: 26 tests passing
 - **API Response Time**: <100ms
@@ -470,20 +483,22 @@ Generated demo/runtime outputs:
 ### Resume/CV Achievement Statement
 
 ```
-Engineered end-to-end data platform analyzing IKEA pricing across 41 countries; 
-developed REST API (FastAPI) with 15+ endpoints and interactive Streamlit dashboard; 
-implemented K-Means clustering for market segmentation; maintained 26 passing pytest tests
-with Pydantic validation and artifact reload checks; deployed via Docker and Streamlit Cloud.
+Engineered an end-to-end analytics platform for IKEA global pricing across 41 countries,
+normalizing currency and GDP context to identify premium markets, affordability pressure,
+e-commerce readiness gaps, and assortment breadth patterns. Built FastAPI and Streamlit
+interfaces, persisted K-Means clustering artifacts, and maintained 26 passing pytest tests
+with Docker-based reproducibility.
 ```
 
 ### Interview Talking Points
 
-- **Problem:** IKEA pricing differs by country, currency, GDP context, assortment breadth, and online availability.
-- **Data layer:** Cleaned and normalized product records, converted prices to USD, joined GDP data, and generated country/product outputs.
-- **Analytics layer:** Built price index, affordability index, assortment metrics, and K-Means market segmentation.
+- **Business question:** How do you compare global pricing when exchange rates, income levels, product range, and online availability differ by market?
+- **Data layer:** Cleaned product records, standardized country names, converted prices to USD, joined GDP reference data, and generated country/product outputs.
+- **Analytics layer:** Built price index, affordability index, online availability, assortment breadth, and K-Means market segmentation.
+- **Story layer:** Turned the metrics into decision-ready recommendations for pricing localization, premium market strategy, e-commerce readiness, and assortment planning.
 - **Service layer:** Exposed market insights through a FastAPI API with fail-fast startup checks and Pydantic validation.
 - **Presentation layer:** Built a Streamlit dashboard with interactive Plotly charts for pricing, affordability, and market adaptation.
-- **Quality layer:** Added 26 passing pytest tests and Docker validation.
+- **Quality layer:** Added 26 passing pytest tests, clustering artifact reload checks, and Docker validation.
 
 ### What Makes This Portfolio-Worthy
 ✅ **Complete**: End-to-end system (data → API → dashboard → tests → deployment)
@@ -495,11 +510,11 @@ with Pydantic validation and artifact reload checks; deployed via Docker and Str
 
 ### Sharing With Recruiters
 When sharing this project, lead with:
-> "Here's my end-to-end data pipeline project with a live dashboard you can explore right now."
+> "I built an end-to-end pricing analytics platform that shows how IKEA market strategy changes when you normalize prices by currency, income context, digital readiness, and assortment breadth."
 
 **Then provide:**
 1. Link to live dashboard: https://share.streamlit.io/batakers/IKEA-Global-Pricing-/main/dashboard/app.py
-2. GitHub repo: https://github.com/batakers/IKEA-Global-Pricing-
+2. GitHub repo: https://github.com/batakers/IKEA-Global-Pricing-Analytics
 
 ## Cloud Deployment
 
