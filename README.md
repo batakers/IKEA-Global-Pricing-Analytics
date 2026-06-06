@@ -26,7 +26,7 @@ A production-style Business Intelligence case study that turns IKEA product pric
 
 ## Platform Capabilities
 
-- End-to-end ETL pipeline for 366K+ raw product records, with a committed 300,000-row cleaned demo sample for GitHub and portfolio use.
+- End-to-end ETL pipeline for 366K+ raw product records, with a committed 300,000-row cleaned demo sample for GitHub and live demo use.
 - FastAPI service with startup data checks, Pydantic validation, and documented API routes.
 - Streamlit dashboard with pricing, affordability, online availability, and market adaptation views.
 - K-Means clustering artifacts that can be persisted, reloaded, and tested.
@@ -441,7 +441,7 @@ Generated demo/runtime outputs:
 - Schema constraint tests
 
 ✅ **Documentation**
-- README (setup, runbook, architecture, API, dashboard, deployment, portfolio notes, testing)
+- README (setup, runbook, architecture, API, dashboard, deployment, testing)
 - Inline code comments
 - Swagger API docs
 
@@ -476,51 +476,11 @@ Generated demo/runtime outputs:
 - **Test Coverage**: 26 tests passing
 - **API Response Time**: <100ms
 
----
-
-## 💼 Using This Project for Your Portfolio
-
-### Resume/CV Achievement Statement
-
-```
-Engineered an end-to-end analytics platform for IKEA global pricing across 41 countries,
-normalizing currency and GDP context to identify premium markets, affordability pressure,
-e-commerce readiness gaps, and assortment breadth patterns. Built FastAPI and Streamlit
-interfaces, persisted K-Means clustering artifacts, and maintained 26 passing pytest tests
-with Docker-based reproducibility.
-```
-
-### Interview Talking Points
-
-- **Business question:** How do you compare global pricing when exchange rates, income levels, product range, and online availability differ by market?
-- **Data layer:** Cleaned product records, standardized country names, converted prices to USD, joined GDP reference data, and generated country/product outputs.
-- **Analytics layer:** Built price index, affordability index, online availability, assortment breadth, and K-Means market segmentation.
-- **Story layer:** Turned the metrics into decision-ready recommendations for pricing localization, premium market strategy, e-commerce readiness, and assortment planning.
-- **Service layer:** Exposed market insights through a FastAPI API with fail-fast startup checks and Pydantic validation.
-- **Presentation layer:** Built a Streamlit dashboard with interactive Plotly charts for pricing, affordability, and market adaptation.
-- **Quality layer:** Added 26 passing pytest tests, clustering artifact reload checks, and Docker validation.
-
-### What Makes This Portfolio-Worthy
-✅ **Complete**: End-to-end system (data → API → dashboard → tests → deployment)
-✅ **Production-Ready**: Docker, validation, logging, comprehensive error handling  
-✅ **Well-Documented**: README runbook, API docs, dashboard screenshots, talking points
-✅ **Live & Accessible**: Working dashboard recruiters can click and explore  
-✅ **Tested**: 26 passing pytest tests
-✅ **Professional**: Clean code, git history, proper structure  
-
-### Sharing With Recruiters
-When sharing this project, lead with:
-> "I built an end-to-end pricing analytics platform that shows how IKEA market strategy changes when you normalize prices by currency, income context, digital readiness, and assortment breadth."
-
-**Then provide:**
-1. Link to live dashboard: https://share.streamlit.io/batakers/IKEA-Global-Pricing-/main/dashboard/app.py
-2. GitHub repo: https://github.com/batakers/IKEA-Global-Pricing-Analytics
-
 ## Cloud Deployment
 
 ### Dashboard-Only Deployment
 
-For a live portfolio demo, deploy `dashboard/app.py` to Streamlit Community Cloud or another Python host that supports Python 3.14.
+For a live public demo, deploy `dashboard/app.py` to Streamlit Community Cloud or another Python host that supports Python 3.14.
 
 Minimum deployment requirements:
 - Generated demo/runtime data committed under `data/`
