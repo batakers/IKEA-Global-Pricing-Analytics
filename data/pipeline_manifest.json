@@ -1,0 +1,378 @@
+{
+  "generated_at": "2026-06-06T20:07:21.529391+00:00",
+  "pipeline_name": "ikea-global-pricing-analytics",
+  "status": "pass",
+  "github_file_limit_bytes": 100000000,
+  "steps": [
+    {
+      "name": "data_preparation",
+      "command": "python notebooks/01_data_preparation.py",
+      "duration_seconds": 0.0,
+      "return_code": null,
+      "status": "skipped",
+      "reason": "Raw IKEA catalog is a local ignored input; default run uses committed processed sample."
+    },
+    {
+      "name": "country_aggregation",
+      "command": "python notebooks/02_country_aggregation.py",
+      "duration_seconds": 2.147,
+      "return_code": 0,
+      "status": "pass"
+    },
+    {
+      "name": "market_clustering",
+      "command": "python notebooks/05_market_clustering.py",
+      "duration_seconds": 1.546,
+      "return_code": 0,
+      "status": "pass"
+    },
+    {
+      "name": "cluster_validation",
+      "command": "python notebooks/07_cluster_validation.py",
+      "duration_seconds": 1.564,
+      "return_code": 0,
+      "status": "pass"
+    }
+  ],
+  "lineage": [
+    {
+      "step": "data_preparation",
+      "inputs": [
+        "data/IKEA_product_catalog.csv",
+        "data/exchange_rate.csv",
+        "data/gdp_per_capita.csv"
+      ],
+      "outputs": [
+        "data/processed_catalog.csv"
+      ]
+    },
+    {
+      "step": "country_aggregation",
+      "inputs": [
+        "data/processed_catalog.csv"
+      ],
+      "outputs": [
+        "data/country_metrics.csv",
+        "data/product_benchmark.csv"
+      ]
+    },
+    {
+      "step": "market_clustering",
+      "inputs": [
+        "data/country_metrics.csv"
+      ],
+      "outputs": [
+        "data/clustering_results.csv",
+        "data/clustering_artifact.joblib",
+        "data/clustering_metadata.json"
+      ]
+    },
+    {
+      "step": "cluster_validation",
+      "inputs": [
+        "data/country_metrics.csv",
+        "data/clustering_results.csv"
+      ],
+      "outputs": [
+        "data/clustering_evaluation.json"
+      ]
+    }
+  ],
+  "artifacts": {
+    "processed_catalog": {
+      "path": "data/processed_catalog.csv",
+      "size_bytes": 97592756,
+      "row_count": 300000,
+      "column_count": 21,
+      "columns": [
+        "unique_id",
+        "product_id",
+        "product_name",
+        "product_type",
+        "product_measurements",
+        "product_description",
+        "main_category",
+        "sub_category",
+        "product_rating",
+        "product_rating_count",
+        "badge",
+        "online_sellable",
+        "url",
+        "price",
+        "currency",
+        "discount",
+        "sale_tag",
+        "country",
+        "usd_rate",
+        "price_usd",
+        "gdp_per_capita"
+      ],
+      "schema_hash": "637fd8d57d568516c4b1464df42f28873ae3d8b18735de267874d3b3ad4e7df3",
+      "missing_expected_columns": [],
+      "country_count": 41
+    },
+    "country_metrics": {
+      "path": "data/country_metrics.csv",
+      "size_bytes": 6949,
+      "row_count": 41,
+      "column_count": 13,
+      "columns": [
+        "country",
+        "region",
+        "avg_price_usd",
+        "avg_rating",
+        "total_products",
+        "unique_categories",
+        "price_standard_deviation",
+        "gdp_per_capita",
+        "online_availability_pct",
+        "assortment_breadth",
+        "global_avg_price",
+        "price_index",
+        "affordability_index"
+      ],
+      "schema_hash": "37a460a6351cdfbd03a0570aaf14df8fa826fdb0064172347c285f3e26eff72e",
+      "missing_expected_columns": [],
+      "country_count": 41
+    },
+    "product_benchmark": {
+      "path": "data/product_benchmark.csv",
+      "size_bytes": 4030339,
+      "row_count": 105356,
+      "column_count": 5,
+      "columns": [
+        "country",
+        "product_name",
+        "product_avg_price_usd",
+        "product_avg_rating",
+        "listings"
+      ],
+      "schema_hash": "148af24b6af5d317522bdf32cbe588c3cf450f337dd19fdf1b6fe6bfdc4b6305",
+      "missing_expected_columns": [],
+      "country_count": 41
+    },
+    "clustering_results": {
+      "path": "data/clustering_results.csv",
+      "size_bytes": 3804,
+      "row_count": 41,
+      "column_count": 7,
+      "columns": [
+        "country",
+        "region",
+        "price_index",
+        "affordability_index",
+        "cluster_id",
+        "silhouette_score",
+        "cluster_label"
+      ],
+      "schema_hash": "41e17c8d89967c94b8b60b7effbe3177f6544381aaf12b381904e7bb8c1a5a26",
+      "missing_expected_columns": [],
+      "country_count": 41
+    },
+    "clustering_artifact": {
+      "path": "data/clustering_artifact.joblib",
+      "size_bytes": 2171
+    },
+    "clustering_metadata": {
+      "path": "data/clustering_metadata.json",
+      "size_bytes": 568,
+      "keys": [
+        "artifact_file",
+        "cluster_count",
+        "feature_columns",
+        "generated_at",
+        "input_csv",
+        "metadata_file",
+        "model_type",
+        "output_csv",
+        "random_seed",
+        "row_count",
+        "scaler_type",
+        "silhouette_score"
+      ]
+    },
+    "clustering_evaluation": {
+      "path": "data/clustering_evaluation.json",
+      "size_bytes": 4053,
+      "keys": [
+        "best_cluster_count_by_silhouette",
+        "cluster_profiles",
+        "decision_tree_proxy_accuracy",
+        "evaluated_cluster_counts",
+        "feature_columns",
+        "feature_drivers",
+        "generated_at",
+        "input_csv",
+        "limitations",
+        "random_seed",
+        "row_count",
+        "selected_cluster_count",
+        "selected_silhouette_score"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "name": "data/processed_catalog.csv exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 97592756
+      }
+    },
+    {
+      "name": "data/country_metrics.csv exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 6949
+      }
+    },
+    {
+      "name": "data/product_benchmark.csv exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 4030339
+      }
+    },
+    {
+      "name": "data/clustering_results.csv exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 3804
+      }
+    },
+    {
+      "name": "data/clustering_artifact.joblib exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 2171
+      }
+    },
+    {
+      "name": "data/clustering_metadata.json exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 568
+      }
+    },
+    {
+      "name": "data/clustering_evaluation.json exists",
+      "status": "pass",
+      "details": {
+        "size_bytes": 4053
+      }
+    },
+    {
+      "name": "processed_catalog schema",
+      "status": "pass",
+      "details": {
+        "missing_columns": []
+      }
+    },
+    {
+      "name": "country_metrics schema",
+      "status": "pass",
+      "details": {
+        "missing_columns": []
+      }
+    },
+    {
+      "name": "product_benchmark schema",
+      "status": "pass",
+      "details": {
+        "missing_columns": []
+      }
+    },
+    {
+      "name": "clustering_results schema",
+      "status": "pass",
+      "details": {
+        "missing_columns": []
+      }
+    },
+    {
+      "name": "processed_catalog row count",
+      "status": "pass",
+      "details": {
+        "row_count": 300000
+      }
+    },
+    {
+      "name": "processed_catalog country coverage",
+      "status": "pass",
+      "details": {
+        "country_count": 41
+      }
+    },
+    {
+      "name": "processed_catalog GitHub file size",
+      "status": "pass",
+      "details": {
+        "size_bytes": 97592756,
+        "limit_bytes": 100000000
+      }
+    },
+    {
+      "name": "price_usd positive",
+      "status": "pass",
+      "details": {
+        "min_price_usd": 0.185
+      }
+    },
+    {
+      "name": "country_metrics country uniqueness",
+      "status": "pass",
+      "details": {
+        "row_count": 41
+      }
+    },
+    {
+      "name": "online availability bounds",
+      "status": "pass",
+      "details": {}
+    },
+    {
+      "name": "product_benchmark row count",
+      "status": "pass",
+      "details": {
+        "row_count": 105356
+      }
+    },
+    {
+      "name": "clustering cluster count",
+      "status": "pass",
+      "details": {
+        "cluster_count": 4
+      }
+    },
+    {
+      "name": "clustering labels",
+      "status": "pass",
+      "details": {
+        "labels": [
+          "Emerging Markets",
+          "Niche Markets",
+          "Premium Markets"
+        ]
+      }
+    },
+    {
+      "name": "clustering metadata relative paths",
+      "status": "pass",
+      "details": {}
+    },
+    {
+      "name": "clustering evaluation selected k",
+      "status": "pass",
+      "details": {
+        "selected_cluster_count": 4
+      }
+    },
+    {
+      "name": "clustering evaluation drivers",
+      "status": "pass",
+      "details": {
+        "top_driver": "assortment_breadth"
+      }
+    }
+  ]
+}

@@ -43,15 +43,20 @@ python -m pip install -r requirements.txt
 
 Pipeline data minimal:
 ```powershell
-python notebooks/01_data_preparation.py
-python notebooks/02_country_aggregation.py
-python notebooks/05_market_clustering.py
+python notebooks/run_pipeline.py
+```
+
+Full local ETL dari raw catalog yang di-ignore:
+```powershell
+python notebooks/run_pipeline.py --include-raw-prep
 ```
 
 Pipeline/report tambahan yang terdokumentasi:
 ```powershell
 python notebooks/06_pdf_report.py
 python notebooks/03_visual_analysis.py
+python notebooks/07_cluster_validation.py
+python notebooks/run_pipeline.py --refresh-preview
 ```
 
 Dashboard dev:
@@ -93,6 +98,8 @@ Build Python package: belum terdeteksi sebagai command project. Build Docker ter
 - `notebooks/01_data_preparation.py` menghasilkan `data/processed_catalog.csv`.
 - `notebooks/02_country_aggregation.py` menghasilkan `data/country_metrics.csv` dan `data/product_benchmark.csv`.
 - `notebooks/05_market_clustering.py` menghasilkan `data/clustering_results.csv`.
+- `notebooks/07_cluster_validation.py` menghasilkan `data/clustering_evaluation.json`.
+- `notebooks/run_pipeline.py` mengorkestrasi refresh downstream outputs dan menghasilkan `data/pipeline_manifest.json`.
 - `api/main.py` membaca CSV output dari `data/` saat startup dan harus fail fast jika output wajib hilang.
 - `dashboard/app.py` membaca output CSV dan menyajikan UI analytics.
 - Logic reusable sebaiknya hidup di `src/`; script di `notebooks/` idealnya tetap tipis sebagai orchestration, IO, visualisasi, dan report generation.
@@ -139,7 +146,7 @@ pytest tests/test_api.py -q
 
 - `data/*.csv` - data besar dan output demo; perubahan bisa memengaruhi API, dashboard, tests, dan klaim portfolio.
 - `notebooks/01_data_preparation.py`, `02_country_aggregation.py`, `05_market_clustering.py` - jalur pipeline utama.
-- `src/data_prep.py`, `src/aggregation.py`, `src/clustering.py` - shared production logic.
+- `src/data_prep.py`, `src/aggregation.py`, `src/clustering.py`, `src/pipeline.py` - shared production logic.
 - `api/main.py` - startup data loading dan endpoint contract.
 - `dashboard/app.py` - UX dashboard portfolio.
 - `requirements.txt`, `pyproject.toml`, `Dockerfile`, `docker-compose.yml` - perubahan runtime/dependency harus diverifikasi agar contract lokal, package metadata, dan Docker tetap selaras.

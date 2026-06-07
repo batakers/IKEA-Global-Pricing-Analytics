@@ -16,6 +16,7 @@ A production-style Business Intelligence case study that turns IKEA product pric
 - **Market maturity shows up in digital readiness.** Average online availability is **92.9%**, but Egypt, Morocco, Jordan, the Philippines, and Qatar sit at the low end of the distribution.
 - **Assortment breadth separates mature markets.** The United States, Sweden, Norway, the Netherlands, and Denmark lead with the broadest sub-category coverage; the observed range is **137-177 sub-categories**.
 - **Clustering turns metrics into strategy groups.** The latest run labels **27 Premium Markets**, **8 Emerging Markets**, and **6 Niche Markets** from price, affordability, online availability, and assortment features.
+- **Driver analysis shows what separates segments.** Assortment breadth and online availability are the strongest current cluster drivers, ahead of affordability and price index.
 
 ## Strategic Recommendations
 
@@ -30,7 +31,9 @@ A production-style Business Intelligence case study that turns IKEA product pric
 - FastAPI service with startup data checks, Pydantic validation, and documented API routes.
 - Streamlit dashboard with pricing, affordability, online availability, and market adaptation views.
 - K-Means clustering artifacts that can be persisted, reloaded, and tested.
-- Dockerized runtime and 26 passing pytest tests covering validation, API smoke paths, pipeline outputs, and clustering artifact reload behavior.
+- Cluster validation comparing k=2..8 plus driver analysis for segment interpretability.
+- Pipeline manifest with lineage, artifact summaries, schema checks, row-count checks, and GitHub file-size guardrails.
+- Dockerized runtime and 33 passing pytest tests covering validation, API smoke paths, pipeline outputs, clustering artifacts, and manifest health checks.
 
 **Tech Stack:** Python, FastAPI, Streamlit, pandas, NumPy, scikit-learn, Pydantic, Docker, Plotly
 
@@ -76,10 +79,11 @@ python -m venv .venv
 .venv\Scripts\activate
 python -m pip install -r requirements.txt
 
-# Run minimum pipeline for dashboard/API
-python notebooks/01_data_preparation.py
-python notebooks/02_country_aggregation.py
-python notebooks/05_market_clustering.py
+# Refresh demo/runtime outputs and pipeline manifest
+python notebooks/run_pipeline.py
+
+# Full local ETL from ignored raw catalog input
+python notebooks/run_pipeline.py --include-raw-prep
 
 # Optional analysis/report outputs
 python notebooks/03_visual_analysis.py
@@ -135,7 +139,7 @@ Key variables:
 
 **Missing data files:** for a full pipeline rerun, ensure local `data/IKEA_product_catalog.csv` exists alongside committed `data/exchange_rate.csv` and `data/gdp_per_capita.csv`.
 
-**API or dashboard missing outputs:** run the minimum pipeline first to generate `processed_catalog.csv`, `country_metrics.csv`, `product_benchmark.csv`, `clustering_results.csv`, `clustering_artifact.joblib`, and `clustering_metadata.json`.
+**API or dashboard missing outputs:** run `python notebooks/run_pipeline.py` first to refresh downstream outputs, clustering artifacts, cluster validation, and `pipeline_manifest.json`. If `processed_catalog.csv` is missing, restore the committed sample or run `python notebooks/run_pipeline.py --include-raw-prep` with local `data/IKEA_product_catalog.csv` available.
 
 **Port already in use:** change the mapped Docker port or run Streamlit with a different port, for example `streamlit run dashboard/app.py --server.port=9501`.
 
@@ -177,6 +181,8 @@ This repo keeps a small, explicit set of demo/runtime artifacts so the API and d
 - `data/clustering_results.csv`
 - `data/clustering_artifact.joblib`
 - `data/clustering_metadata.json`
+- `data/clustering_evaluation.json`
+- `data/pipeline_manifest.json`
 - `data/strategic_insights.txt`
 
 These files can be regenerated with the documented pipeline. If a change modifies them, verify at least the output schema, row counts, and dashboard/API assumptions before treating the change as ready.
@@ -197,11 +203,11 @@ These files can be regenerated with the documented pipeline. If a change modifie
 ## Architecture Summary
 
 ```
-Raw CSV inputs
-    ↓
-notebooks/01_data_preparation.py
+notebooks/run_pipeline.py
     ↓
 data/processed_catalog.csv
+    ├─ default: reuse committed 300,000-row demo sample
+    └─ --include-raw-prep: regenerate from local ignored raw CSV inputs
     ↓
 notebooks/02_country_aggregation.py
     ↓
@@ -211,13 +217,18 @@ notebooks/05_market_clustering.py
     ↓
 data/clustering_results.csv + data/clustering_artifact.joblib + data/clustering_metadata.json
     ↓
+notebooks/07_cluster_validation.py
+    ↓
+data/clustering_evaluation.json + data/pipeline_manifest.json
+    ↓
 FastAPI API + Streamlit dashboard
 ```
 
 Core reusable logic lives in `src/`:
 - `src/data_prep.py` - parsing, normalization, country standardization
 - `src/aggregation.py` - country metrics and product benchmark generation
-- `src/clustering.py` - market clustering, artifact persistence, reload behavior
+- `src/clustering.py` - market clustering, artifact persistence, reload behavior, cluster validation
+- `src/pipeline.py` - artifact summaries, lineage manifest, and pipeline health checks
 - `src/schemas.py` - Pydantic validation models
 - `src/logger.py` - logging setup
 
@@ -238,19 +249,24 @@ IKEA-Global-Pricing-Analytics/
 │   ├── clustering_results.csv
 │   ├── clustering_artifact.joblib
 │   ├── clustering_metadata.json
+│   ├── clustering_evaluation.json
+│   ├── pipeline_manifest.json
 │   └── strategic_insights.txt
 ├── notebooks/
+│   ├── run_pipeline.py
 │   ├── 01_data_preparation.py
 │   ├── 02_country_aggregation.py
 │   ├── 03_visual_analysis.py
 │   ├── 04_insight_generation.py
 │   ├── 05_market_clustering.py
 │   ├── 06_pdf_report.py
+│   ├── 07_cluster_validation.py
 │   └── outputs/
 ├── src/
 │   ├── data_prep.py
 │   ├── aggregation.py
 │   ├── clustering.py
+│   ├── pipeline.py
 │   ├── schemas.py (Pydantic models)
 │   ├── logger.py
 │   └── __init__.py
@@ -318,6 +334,14 @@ Pipeline generates these metrics:
 6. PDF Reporting (06_pdf_report.py)
    → Generate executive report
    → Embed metrics and visualizations
+
+7. Cluster Validation (07_cluster_validation.py)
+   → Compare k=2..8
+   → Rank cluster drivers
+
+8. Pipeline Manifest (run_pipeline.py)
+   → Orchestrate downstream pipeline steps
+   → Persist lineage, artifact summaries, and health checks
 ```
 
 ## API Endpoints
@@ -376,7 +400,7 @@ GET /redoc (ReDoc)
 
 ## Testing
 
-26 pytest tests currently pass:
+33 pytest tests currently pass:
 
 ```bash
 pytest tests -q
@@ -387,7 +411,8 @@ pytest tests -q
 # - Business logic calculations
 # - API smoke paths and fail-fast missing-data behavior
 # - Generated pipeline CSV shape checks
-# - Clustering output, artifact metadata, and reload behavior
+# - Clustering output, artifact metadata, validation metrics, and reload behavior
+# - Pipeline manifest lineage, artifact summaries, and health checks
 ```
 
 ## Analysis Outputs
@@ -401,16 +426,24 @@ Generated demo/runtime outputs:
 5. **Clustering Artifacts**
    - `clustering_artifact.joblib`
    - `clustering_metadata.json`
-6. **Rankings**
+6. **Cluster Validation**
+   - `clustering_evaluation.json`
+   - k=2..8 silhouette/inertia comparison
+   - feature driver ranking
+7. **Pipeline Manifest**
+   - `pipeline_manifest.json`
+   - lineage from source/reference inputs to analytics outputs
+   - 23 artifact and health checks in the latest run
+8. **Rankings**
    - Top 10 most expensive (Egypt, Morocco, Jordan, ...)
    - Top 10 cheapest (Malaysia, India, Thailand, ...)
    - Affordability pressure ranking
-7. **Visualizations**
+9. **Visualizations**
    - Global pricing choropleth
    - GDP vs price scatter
    - Product benchmarks
    - Regional category distribution
-8. **Reports**
+10. **Reports**
    - PDF executive report
    - Strategic insights & recommendations
 
@@ -435,7 +468,7 @@ Generated demo/runtime outputs:
 - Currency standardization
 
 ✅ **Testing & QA**
-- 26 passing pytest tests
+- 33 passing pytest tests
 - Data validation tests
 - Business logic verification
 - Schema constraint tests
@@ -472,8 +505,11 @@ Generated demo/runtime outputs:
 - **Price Index Range**: 0.69x-1.54x vs global average
 - **Online Availability Avg**: 92.9%
 - **Market Segments**: 27 Premium, 8 Emerging, and 6 Niche markets in the latest clustering run
-- **Pipeline Time**: ~20 seconds (end-to-end)
-- **Test Coverage**: 26 tests passing
+- **Cluster Validation**: selected k=4 silhouette score 0.4504; k=2 scores highest at 0.4767 but provides less strategic segmentation depth
+- **Top Cluster Drivers**: assortment breadth, online availability, affordability index, price index
+- **Pipeline Health**: latest manifest status pass with 23 checks
+- **Default Pipeline Run**: ~9 seconds locally with raw prep skipped and the committed processed sample reused
+- **Test Coverage**: 33 tests passing
 - **API Response Time**: <100ms
 
 ## Cloud Deployment

@@ -1,0 +1,128 @@
+{
+  "generated_at": "2026-06-06T20:07:18.941012+00:00",
+  "input_csv": "data/country_metrics.csv",
+  "feature_columns": [
+    "price_index",
+    "affordability_index",
+    "online_availability_pct",
+    "assortment_breadth"
+  ],
+  "random_seed": 42,
+  "row_count": 41,
+  "evaluated_cluster_counts": [
+    {
+      "cluster_count": 2,
+      "inertia": 98.21108598362343,
+      "silhouette_score": 0.4767124613179721,
+      "min_cluster_size": 12,
+      "max_cluster_size": 29
+    },
+    {
+      "cluster_count": 3,
+      "inertia": 56.55531247392689,
+      "silhouette_score": 0.4737050325857204,
+      "min_cluster_size": 2,
+      "max_cluster_size": 27
+    },
+    {
+      "cluster_count": 4,
+      "inertia": 41.26618222777517,
+      "silhouette_score": 0.45043117397091087,
+      "min_cluster_size": 2,
+      "max_cluster_size": 25
+    },
+    {
+      "cluster_count": 5,
+      "inertia": 29.193151390651945,
+      "silhouette_score": 0.3720255392607071,
+      "min_cluster_size": 2,
+      "max_cluster_size": 15
+    },
+    {
+      "cluster_count": 6,
+      "inertia": 24.410847006454297,
+      "silhouette_score": 0.3456187790320975,
+      "min_cluster_size": 2,
+      "max_cluster_size": 14
+    },
+    {
+      "cluster_count": 7,
+      "inertia": 20.570104916445647,
+      "silhouette_score": 0.36238656900375915,
+      "min_cluster_size": 1,
+      "max_cluster_size": 16
+    },
+    {
+      "cluster_count": 8,
+      "inertia": 17.438709894039906,
+      "silhouette_score": 0.33499986262233145,
+      "min_cluster_size": 1,
+      "max_cluster_size": 14
+    }
+  ],
+  "best_cluster_count_by_silhouette": 2,
+  "selected_cluster_count": 4,
+  "selected_silhouette_score": 0.45043117397091087,
+  "decision_tree_proxy_accuracy": 1.0,
+  "feature_drivers": [
+    {
+      "feature": "assortment_breadth",
+      "cluster_center_separation": 0.8230408572657402,
+      "center_range_standardized": 2.1056259436536884,
+      "decision_tree_importance": 0.538186813186813,
+      "rank": 1
+    },
+    {
+      "feature": "online_availability_pct",
+      "cluster_center_separation": 0.7437715783521516,
+      "center_range_standardized": 3.346727496161093,
+      "decision_tree_importance": 0.24117647058823535,
+      "rank": 2
+    },
+    {
+      "feature": "affordability_index",
+      "cluster_center_separation": 0.4421412457668274,
+      "center_range_standardized": 3.9928692737467206,
+      "decision_tree_importance": 0.13781512605042015,
+      "rank": 3
+    },
+    {
+      "feature": "price_index",
+      "cluster_center_separation": 0.4035791100999275,
+      "center_range_standardized": 4.037796771972706,
+      "decision_tree_importance": 0.08282159017453139,
+      "rank": 4
+    }
+  ],
+  "cluster_profiles": [
+    {
+      "cluster_label": "Premium Markets",
+      "countries": 27,
+      "avg_price_index": 1.0475981749598293,
+      "avg_affordability_index": 0.009487229312565466,
+      "avg_online_availability_pct": 94.55437652231964,
+      "avg_assortment_breadth": 164.40740740740742
+    },
+    {
+      "cluster_label": "Emerging Markets",
+      "countries": 8,
+      "avg_price_index": 0.9913077989671641,
+      "avg_affordability_index": 0.008869429446579633,
+      "avg_online_availability_pct": 85.08939759455671,
+      "avg_assortment_breadth": 147.25
+    },
+    {
+      "cluster_label": "Niche Markets",
+      "countries": 6,
+      "avg_price_index": 0.7468043168903279,
+      "avg_affordability_index": 0.015501884040820302,
+      "avg_online_availability_pct": 96.00752589574553,
+      "avg_assortment_breadth": 154.5
+    }
+  ],
+  "limitations": [
+    "Country-level clustering has a small sample size, so validation metrics should guide interpretation rather than replace business judgment.",
+    "K-Means assumes scaled numeric features and compact cluster geometry.",
+    "Decision tree feature importance is used as an interpretability proxy for cluster assignments, not as a predictive production model."
+  ]
+}
