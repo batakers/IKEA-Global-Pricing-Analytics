@@ -5,10 +5,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from src.data_prep import parse_numeric, standardize_country
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
 INPUT_FILE = DATA_DIR / "processed_catalog.csv"
+GDP_REFERENCE = DATA_DIR / "gdp_per_capita.csv"
 COUNTRY_OUTPUT = DATA_DIR / "country_metrics.csv"
 BENCHMARK_OUTPUT = DATA_DIR / "product_benchmark.csv"
 
@@ -82,8 +85,32 @@ def load_clean_data() -> pd.DataFrame:
     return pd.read_csv(INPUT_FILE)
 
 
+def load_gdp_reference(path: Path = GDP_REFERENCE) -> pd.Series:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing file: {path}. GDP reference is required for affordability metrics.")
+
+    gdp_df = pd.read_csv(path)
+    if not {"country", "gdp_per_capita"}.issubset(gdp_df.columns):
+        raise ValueError("gdp_per_capita.csv must include country and gdp_per_capita columns.")
+
+    reference = gdp_df.copy()
+    reference["country"] = reference["country"].apply(standardize_country)
+    reference["gdp_per_capita"] = reference["gdp_per_capita"].apply(parse_numeric)
+    reference = reference.dropna(subset=["country", "gdp_per_capita"])
+
+    return reference.drop_duplicates("country").set_index("country")["gdp_per_capita"]
+
+
 def create_country_metrics(df: pd.DataFrame) -> pd.DataFrame:
     country_df = df.copy()
+    country_df["country"] = country_df["country"].apply(standardize_country)
+    gdp_reference = load_gdp_reference()
+
+    if "gdp_per_capita" in country_df.columns:
+        country_df["gdp_per_capita"] = country_df["gdp_per_capita"].fillna(country_df["country"].map(gdp_reference))
+    else:
+        country_df["gdp_per_capita"] = country_df["country"].map(gdp_reference)
+
     country_df["region"] = country_df["country"].map(REGION_MAP).fillna("Other")
 
     global_avg_price = country_df["price_usd"].mean()
@@ -112,8 +139,11 @@ def create_country_metrics(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def create_product_benchmark(df: pd.DataFrame) -> pd.DataFrame:
+    benchmark_df = df.copy()
+    benchmark_df["country"] = benchmark_df["country"].apply(standardize_country)
+
     benchmark = (
-        df.groupby(["country", "product_name"], as_index=False)
+        benchmark_df.groupby(["country", "product_name"], as_index=False)
         .agg(
             product_avg_price_usd=("price_usd", "mean"),
             product_avg_rating=("product_rating", "mean"),

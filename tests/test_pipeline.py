@@ -80,6 +80,10 @@ def test_generated_pipeline_csv_outputs_have_expected_shape() -> None:
     assert country_df["country"].nunique() == len(country_df)
     assert country_df["avg_price_usd"].gt(0).all()
     assert country_df["price_index"].gt(0).all()
+    assert country_df["gdp_per_capita"].notna().all()
+    assert country_df["gdp_per_capita"].gt(0).all()
+    assert country_df["affordability_index"].notna().all()
+    assert country_df["affordability_index"].ge(0).all()
     assert country_df["online_availability_pct"].between(0, 100).all()
 
     assert len(benchmark_df) >= 100_000
@@ -98,6 +102,8 @@ def test_aggregation_helpers_rebuild_expected_output_shapes() -> None:
     assert len(country_df) >= 40
     assert country_df["country"].nunique() == len(country_df)
     assert country_df["price_index"].gt(0).all()
+    assert country_df["gdp_per_capita"].notna().all()
+    assert country_df["affordability_index"].notna().all()
 
     assert len(benchmark_df) >= 100_000
     assert benchmark_df["product_name"].nunique() >= 1_000

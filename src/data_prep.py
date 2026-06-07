@@ -16,6 +16,7 @@ COUNTRY_NORMALIZATION = {
     "u.a.e": "United Arab Emirates",
     "south korea": "Korea, Republic Of",
     "korea": "Korea, Republic Of",
+    "korea republic of": "Korea, Republic Of",
     "russia": "Russian Federation",
     "czech republic": "Czechia",
     "viet nam": "Vietnam",
@@ -26,7 +27,7 @@ def standardize_country(country_name: object) -> str | float:
     if pd.isna(country_name):
         return np.nan
 
-    normalized = str(country_name).strip()
+    normalized = str(country_name).replace("_", " ").strip()
     if not normalized:
         return np.nan
 

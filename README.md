@@ -15,7 +15,7 @@ A production-style Business Intelligence case study that turns IKEA product pric
 - **Price positioning is not the same as affordability.** Egypt and Morocco rank highest on average price and affordability pressure, while India has a below-average price index but still ranks high on affordability pressure.
 - **Market maturity shows up in digital readiness.** Average online availability is **92.9%**, but Egypt, Morocco, Jordan, the Philippines, and Qatar sit at the low end of the distribution.
 - **Assortment breadth separates mature markets.** The United States, Sweden, Norway, the Netherlands, and Denmark lead with the broadest sub-category coverage; the observed range is **137-177 sub-categories**.
-- **Clustering turns metrics into strategy groups.** The latest run labels **27 Premium Markets**, **8 Emerging Markets**, and **6 Niche Markets** from price, affordability, online availability, and assortment features.
+- **Clustering turns metrics into strategy groups.** The latest run labels **28 Premium Markets**, **7 Emerging Markets**, and **6 Niche Markets** from price, affordability, online availability, and assortment features.
 - **Driver analysis shows what separates segments.** Assortment breadth and online availability are the strongest current cluster drivers, ahead of affordability and price index.
 
 ## Strategic Recommendations
@@ -33,7 +33,7 @@ A production-style Business Intelligence case study that turns IKEA product pric
 - K-Means clustering artifacts that can be persisted, reloaded, and tested.
 - Cluster validation comparing k=2..8 plus driver analysis for segment interpretability.
 - Pipeline manifest with lineage, artifact summaries, schema checks, row-count checks, and GitHub file-size guardrails.
-- Dockerized runtime and 33 passing pytest tests covering validation, API smoke paths, pipeline outputs, clustering artifacts, and manifest health checks.
+- Dockerized runtime and 34 passing pytest tests covering validation, API smoke paths, pipeline outputs, clustering artifacts, and manifest health checks.
 
 **Tech Stack:** Python, FastAPI, Streamlit, pandas, NumPy, scikit-learn, Pydantic, Docker, Plotly
 
@@ -151,7 +151,7 @@ The project uses three CSV files located in `data/` folder:
 |------|-------------|----------|
 | `IKEA_product_catalog.csv` | IKEA product data with prices, ratings, categories by country | 46 countries, 366K+ rows |
 | `exchange_rate.csv` | Currency conversion rates to USD | 40 currencies |
-| `gdp_per_capita.csv` | GDP per capita for affordability analysis | 48 countries |
+| `gdp_per_capita.csv` | GDP per capita for affordability analysis | 51 countries |
 
 **Note on Data:**
 - `IKEA_product_catalog.csv` is sourced from public IKEA data (Kaggle dataset or similar)
@@ -400,7 +400,7 @@ GET /redoc (ReDoc)
 
 ## Testing
 
-33 pytest tests currently pass:
+34 pytest tests currently pass:
 
 ```bash
 pytest tests -q
@@ -468,7 +468,7 @@ Generated demo/runtime outputs:
 - Currency standardization
 
 ✅ **Testing & QA**
-- 33 passing pytest tests
+- 34 passing pytest tests
 - Data validation tests
 - Business logic verification
 - Schema constraint tests
@@ -504,12 +504,12 @@ Generated demo/runtime outputs:
 - **Market Avg Price Range**: $113.86-$255.15 USD (Malaysia to Egypt)
 - **Price Index Range**: 0.69x-1.54x vs global average
 - **Online Availability Avg**: 92.9%
-- **Market Segments**: 27 Premium, 8 Emerging, and 6 Niche markets in the latest clustering run
-- **Cluster Validation**: selected k=4 silhouette score 0.4504; k=2 scores highest at 0.4767 but provides less strategic segmentation depth
+- **Market Segments**: 28 Premium, 7 Emerging, and 6 Niche markets in the latest clustering run
+- **Cluster Validation**: selected k=4 silhouette score 0.4600; k=2 scores highest at 0.6071 but provides less strategic segmentation depth
 - **Top Cluster Drivers**: assortment breadth, online availability, affordability index, price index
-- **Pipeline Health**: latest manifest status pass with 23 checks
+- **Pipeline Health**: latest manifest status pass with 25 checks
 - **Default Pipeline Run**: ~9 seconds locally with raw prep skipped and the committed processed sample reused
-- **Test Coverage**: 33 tests passing
+- **Test Coverage**: 34 tests passing
 - **API Response Time**: <100ms
 
 ## Cloud Deployment

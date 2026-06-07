@@ -89,6 +89,9 @@ class TestDataCleaning:
         """Test country name alias resolution."""
         assert standardize_country("usa") == "United States"
         assert standardize_country("uk") == "United Kingdom"
+        assert standardize_country("Saudi_Arabia") == "Saudi Arabia"
+        assert standardize_country("South_Korea") == "Korea, Republic Of"
+        assert standardize_country("Czech_Republic") == "Czechia"
 
 
 # ============================================================================

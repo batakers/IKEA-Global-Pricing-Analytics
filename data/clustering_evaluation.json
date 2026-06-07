@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-06T20:07:18.941012+00:00",
+  "generated_at": "2026-06-07T09:11:40.171285+00:00",
   "input_csv": "data/country_metrics.csv",
   "feature_columns": [
     "price_index",
@@ -12,110 +12,110 @@
   "evaluated_cluster_counts": [
     {
       "cluster_count": 2,
-      "inertia": 98.21108598362343,
-      "silhouette_score": 0.4767124613179721,
-      "min_cluster_size": 12,
-      "max_cluster_size": 29
+      "inertia": 90.95193234467708,
+      "silhouette_score": 0.607051492886133,
+      "min_cluster_size": 4,
+      "max_cluster_size": 37
     },
     {
       "cluster_count": 3,
-      "inertia": 56.55531247392689,
-      "silhouette_score": 0.4737050325857204,
-      "min_cluster_size": 2,
+      "inertia": 51.0410646642876,
+      "silhouette_score": 0.4827342715827608,
+      "min_cluster_size": 3,
       "max_cluster_size": 27
     },
     {
       "cluster_count": 4,
-      "inertia": 41.26618222777517,
-      "silhouette_score": 0.45043117397091087,
-      "min_cluster_size": 2,
+      "inertia": 38.78976872161255,
+      "silhouette_score": 0.4599735417749122,
+      "min_cluster_size": 3,
       "max_cluster_size": 25
     },
     {
       "cluster_count": 5,
-      "inertia": 29.193151390651945,
-      "silhouette_score": 0.3720255392607071,
-      "min_cluster_size": 2,
+      "inertia": 27.40745017470062,
+      "silhouette_score": 0.38655447249912783,
+      "min_cluster_size": 3,
       "max_cluster_size": 15
     },
     {
       "cluster_count": 6,
-      "inertia": 24.410847006454297,
-      "silhouette_score": 0.3456187790320975,
+      "inertia": 22.63968377030182,
+      "silhouette_score": 0.38704258482974346,
       "min_cluster_size": 2,
-      "max_cluster_size": 14
+      "max_cluster_size": 16
     },
     {
       "cluster_count": 7,
-      "inertia": 20.570104916445647,
-      "silhouette_score": 0.36238656900375915,
+      "inertia": 19.060277239322932,
+      "silhouette_score": 0.38128600846084604,
       "min_cluster_size": 1,
       "max_cluster_size": 16
     },
     {
       "cluster_count": 8,
-      "inertia": 17.438709894039906,
-      "silhouette_score": 0.33499986262233145,
+      "inertia": 15.125845901469063,
+      "silhouette_score": 0.3684722023496177,
       "min_cluster_size": 1,
-      "max_cluster_size": 14
+      "max_cluster_size": 16
     }
   ],
   "best_cluster_count_by_silhouette": 2,
   "selected_cluster_count": 4,
-  "selected_silhouette_score": 0.45043117397091087,
+  "selected_silhouette_score": 0.4599735417749122,
   "decision_tree_proxy_accuracy": 1.0,
   "feature_drivers": [
     {
       "feature": "assortment_breadth",
       "cluster_center_separation": 0.8230408572657402,
-      "center_range_standardized": 2.1056259436536884,
-      "decision_tree_importance": 0.538186813186813,
+      "center_range_standardized": 2.1014917530786987,
+      "decision_tree_importance": 0.5145743376512607,
       "rank": 1
     },
     {
       "feature": "online_availability_pct",
       "cluster_center_separation": 0.7437715783521516,
-      "center_range_standardized": 3.346727496161093,
-      "decision_tree_importance": 0.24117647058823535,
+      "center_range_standardized": 2.9455532079560856,
+      "decision_tree_importance": 0.22446292446292454,
       "rank": 2
     },
     {
       "feature": "affordability_index",
-      "cluster_center_separation": 0.4421412457668274,
-      "center_range_standardized": 3.9928692737467206,
-      "decision_tree_importance": 0.13781512605042015,
+      "cluster_center_separation": 0.4970314694415101,
+      "center_range_standardized": 3.3707465356227493,
+      "decision_tree_importance": 0.179002079002079,
       "rank": 3
     },
     {
       "feature": "price_index",
-      "cluster_center_separation": 0.4035791100999275,
-      "center_range_standardized": 4.037796771972706,
-      "decision_tree_importance": 0.08282159017453139,
+      "cluster_center_separation": 0.4868125452534277,
+      "center_range_standardized": 3.7170682713305303,
+      "decision_tree_importance": 0.08196065888373585,
       "rank": 4
     }
   ],
   "cluster_profiles": [
     {
       "cluster_label": "Premium Markets",
-      "countries": 27,
-      "avg_price_index": 1.0475981749598293,
-      "avg_affordability_index": 0.009487229312565466,
-      "avg_online_availability_pct": 94.55437652231964,
-      "avg_assortment_breadth": 164.40740740740742
+      "countries": 28,
+      "avg_price_index": 1.0565722231313404,
+      "avg_affordability_index": 0.010167838631222014,
+      "avg_online_availability_pct": 94.11024322037238,
+      "avg_assortment_breadth": 163.78571428571428
     },
     {
       "cluster_label": "Emerging Markets",
-      "countries": 8,
-      "avg_price_index": 0.9913077989671641,
-      "avg_affordability_index": 0.008869429446579633,
-      "avg_online_availability_pct": 85.08939759455671,
-      "avg_assortment_breadth": 147.25
+      "countries": 7,
+      "avg_price_index": 0.9473701239964536,
+      "avg_affordability_index": 0.00838670049944107,
+      "avg_online_availability_pct": 85.51379095552242,
+      "avg_assortment_breadth": 147.28571428571428
     },
     {
       "cluster_label": "Niche Markets",
       "countries": 6,
       "avg_price_index": 0.7468043168903279,
-      "avg_affordability_index": 0.015501884040820302,
+      "avg_affordability_index": 0.013587364338274467,
       "avg_online_availability_pct": 96.00752589574553,
       "avg_assortment_breadth": 154.5
     }

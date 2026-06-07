@@ -246,6 +246,24 @@ def validate_pipeline_outputs() -> list[dict[str, Any]]:
         else _fail_check("country_metrics country uniqueness", "countries must be unique and at least 40")
     )
     checks.append(
+        _pass_check("country_metrics GDP completeness", {"missing_gdp_rows": 0})
+        if country_df["gdp_per_capita"].notna().all() and country_df["gdp_per_capita"].gt(0).all()
+        else _fail_check(
+            "country_metrics GDP completeness",
+            "GDP per capita must be present and positive for all country metrics",
+            {"missing_gdp_rows": int(country_df["gdp_per_capita"].isna().sum())},
+        )
+    )
+    checks.append(
+        _pass_check("country_metrics affordability completeness", {"missing_affordability_rows": 0})
+        if country_df["affordability_index"].notna().all() and country_df["affordability_index"].ge(0).all()
+        else _fail_check(
+            "country_metrics affordability completeness",
+            "affordability index must be present and non-negative for all country metrics",
+            {"missing_affordability_rows": int(country_df["affordability_index"].isna().sum())},
+        )
+    )
+    checks.append(
         _pass_check("online availability bounds")
         if country_df["online_availability_pct"].between(0, 100).all()
         else _fail_check("online availability bounds", "online availability must be between 0 and 100")

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-06T20:07:21.529391+00:00",
+  "generated_at": "2026-06-07T09:11:43.031960+00:00",
   "pipeline_name": "ikea-global-pricing-analytics",
   "status": "pass",
   "github_file_limit_bytes": 100000000,
@@ -15,21 +15,21 @@
     {
       "name": "country_aggregation",
       "command": "python notebooks/02_country_aggregation.py",
-      "duration_seconds": 2.147,
+      "duration_seconds": 3.122,
       "return_code": 0,
       "status": "pass"
     },
     {
       "name": "market_clustering",
       "command": "python notebooks/05_market_clustering.py",
-      "duration_seconds": 1.546,
+      "duration_seconds": 2.181,
       "return_code": 0,
       "status": "pass"
     },
     {
       "name": "cluster_validation",
       "command": "python notebooks/07_cluster_validation.py",
-      "duration_seconds": 1.564,
+      "duration_seconds": 1.986,
       "return_code": 0,
       "status": "pass"
     }
@@ -113,7 +113,7 @@
     },
     "country_metrics": {
       "path": "data/country_metrics.csv",
-      "size_bytes": 6949,
+      "size_bytes": 7120,
       "row_count": 41,
       "column_count": 13,
       "columns": [
@@ -137,7 +137,7 @@
     },
     "product_benchmark": {
       "path": "data/product_benchmark.csv",
-      "size_bytes": 4030339,
+      "size_bytes": 4034407,
       "row_count": 105356,
       "column_count": 5,
       "columns": [
@@ -153,7 +153,7 @@
     },
     "clustering_results": {
       "path": "data/clustering_results.csv",
-      "size_bytes": 3804,
+      "size_bytes": 3877,
       "row_count": 41,
       "column_count": 7,
       "columns": [
@@ -175,7 +175,7 @@
     },
     "clustering_metadata": {
       "path": "data/clustering_metadata.json",
-      "size_bytes": 568,
+      "size_bytes": 567,
       "keys": [
         "artifact_file",
         "cluster_count",
@@ -193,7 +193,7 @@
     },
     "clustering_evaluation": {
       "path": "data/clustering_evaluation.json",
-      "size_bytes": 4053,
+      "size_bytes": 4059,
       "keys": [
         "best_cluster_count_by_silhouette",
         "cluster_profiles",
@@ -223,21 +223,21 @@
       "name": "data/country_metrics.csv exists",
       "status": "pass",
       "details": {
-        "size_bytes": 6949
+        "size_bytes": 7120
       }
     },
     {
       "name": "data/product_benchmark.csv exists",
       "status": "pass",
       "details": {
-        "size_bytes": 4030339
+        "size_bytes": 4034407
       }
     },
     {
       "name": "data/clustering_results.csv exists",
       "status": "pass",
       "details": {
-        "size_bytes": 3804
+        "size_bytes": 3877
       }
     },
     {
@@ -251,14 +251,14 @@
       "name": "data/clustering_metadata.json exists",
       "status": "pass",
       "details": {
-        "size_bytes": 568
+        "size_bytes": 567
       }
     },
     {
       "name": "data/clustering_evaluation.json exists",
       "status": "pass",
       "details": {
-        "size_bytes": 4053
+        "size_bytes": 4059
       }
     },
     {
@@ -323,6 +323,20 @@
       "status": "pass",
       "details": {
         "row_count": 41
+      }
+    },
+    {
+      "name": "country_metrics GDP completeness",
+      "status": "pass",
+      "details": {
+        "missing_gdp_rows": 0
+      }
+    },
+    {
+      "name": "country_metrics affordability completeness",
+      "status": "pass",
+      "details": {
+        "missing_affordability_rows": 0
       }
     },
     {

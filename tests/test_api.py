@@ -26,6 +26,17 @@ def test_global_statistics_work_when_data_is_available():
     assert payload["average_price_usd"] > 0
 
 
+def test_countries_endpoint_serializes_all_country_metrics():
+    with TestClient(api_main.app) as client:
+        response = client.get("/api/v1/countries")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert len(payload) >= 40
+    assert all(country["gdp_per_capita"] > 0 for country in payload)
+    assert all(country["affordability_index"] >= 0 for country in payload)
+
+
 def test_load_data_from_directory_raises_clear_error_when_outputs_are_missing(tmp_path: Path):
     with pytest.raises(FileNotFoundError, match="Required data outputs missing: country_metrics.csv, product_benchmark.csv, clustering_results.csv"):
         api_main.load_data_from_directory(tmp_path)
